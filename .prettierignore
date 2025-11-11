@@ -4,3 +4,10 @@ node_modules
 **/package.json
 !/package.json
 jupyterlab_markdown_viewer_toc_fix
+
+# Documentation files
+MARKDOWN_VIEWER_TOC_ISSUE_RCA.md
+.claude/JOURNAL.md
+.claude/CLAUDE.md
+sample-doc.md
+README.md
