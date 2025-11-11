@@ -1,6 +1,6 @@
 {
     "name": "jupyterlab_markdown_viewer_toc_fix",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "Jupyterlab extension to fix issues with TOC navigation in Markdown Viewer in Jupyterlab",
     "keywords": [
         "jupyter",
@@ -56,7 +56,11 @@
         "watch:labextension": "jupyter labextension watch ."
     },
     "dependencies": {
-        "@jupyterlab/application": "^4.0.0"
+        "@jupyterlab/application": "^4.0.0",
+        "@jupyterlab/apputils": "^4.0.0",
+        "@jupyterlab/markdownviewer": "^4.0.0",
+        "@jupyterlab/rendermime": "^4.0.0",
+        "@jupyterlab/toc": "^6.0.0"
     },
     "devDependencies": {
         "@jupyterlab/builder": "^4.0.0",
