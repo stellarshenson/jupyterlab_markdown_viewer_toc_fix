@@ -8,7 +8,7 @@
 
 JupyterLab 4.x extension that fixes broken Table of Contents (TOC) navigation and anchor links in the Markdown Viewer.
 
-> [!IMPORTANT]
+> [!WARNING]
 > **Extension will be deprecated**: This extension is a temporary fix for a known issue in JupyterLab 4.0 - 4.4.10, where neither TOC nor in-markdown hyperlinks to markdown sections allow document to be scrolled. Once this is fixed in JupyterLab core, this extension will be obsolete and should not be installed.
 
 ## Problem
