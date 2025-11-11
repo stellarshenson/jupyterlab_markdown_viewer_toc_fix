@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="3.823">
+  <testsuite name="jupyterlab_markdown_viewer_toc_fix" errors="0" failures="0" skipped="0" timestamp="2025-11-11T13:34:31" time="2.968" tests="1">
+    <testcase classname="jupyterlab_markdown_viewer_toc_fix should be tested" name="jupyterlab_markdown_viewer_toc_fix should be tested" time="0.002">
+    </testcase>
+  </testsuite>
+</testsuites>
