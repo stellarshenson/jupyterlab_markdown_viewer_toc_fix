@@ -3,11 +3,14 @@ node_modules
 **/lib
 **/package.json
 !/package.json
+package-lock.json
+yarn.lock
 jupyterlab_markdown_viewer_toc_fix
 
 # Documentation files
 MARKDOWN_VIEWER_TOC_ISSUE_RCA.md
 .claude/JOURNAL.md
 .claude/CLAUDE.md
+CLAUDE.md
 sample-doc.md
 README.md
