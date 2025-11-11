@@ -155,4 +155,4 @@ jobs:
       - uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
       - uses: jupyterlab/maintainer-tools/.github/actions/check-links@v1
         with:
-          ignore_links: .github/.links_ignore
+          ignore_links: "https://www.npmjs.com/package/jupyterlab_markdown_viewer_toc_fix,https://pepy.tech/project/jupyterlab_markdown_viewer_toc_fix,https://static.pepy.tech/badge/jupyterlab_markdown_viewer_toc_fix"
