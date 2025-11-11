@@ -6,7 +6,7 @@
 
 JupyterLab 4.x extension that fixes broken Table of Contents (TOC) navigation and anchor links in the Markdown Viewer.
 
-## The Problem
+## Problem
 
 JupyterLab's markdown viewer has completely non-functional TOC navigation and anchor links. Clicking TOC items or in-document links like `[Section](#section)` produces no scrolling. Console shows "Heading element not found" errors.
 
@@ -14,26 +14,19 @@ JupyterLab's markdown viewer has completely non-functional TOC navigation and an
 
 See [MARKDOWN_VIEWER_TOC_ISSUE_RCA.md](MARKDOWN_VIEWER_TOC_ISSUE_RCA.md) for detailed root cause analysis.
 
-## The Fix
+## Solution
 
-Patch 1 - Fragment Navigation (src/index.ts:14-55):
-- Intercepts RenderedHTMLCommon.setFragment() prototype method
-- Queries both #id and [data-jupyter-id] selectors with fallback
-- Fixes in-document links, deep-links, and anchor hover navigation
+The extension applies three runtime patches addressing the core defects:
 
-Patch 2 - TOC Navigation (src/index.ts:57-140):
-- Monitors markdown viewer widget creation via tracker
-- Patches TOC model's onActiveHeadingChanged handler per widget
-- Uses conditional attribute selection: id when allowNamedProperties = true, data-jupyter-id when false
-- Properly awaits async heading ID resolution
+**TOC Navigation Patch** - Connects to markdown viewer TOC model's `activeHeadingChanged` signal, uses conditional attribute selector (`data-jupyter-id` vs `id`) based on sanitizer settings, properly awaits async heading ID resolution
 
-**Technical Approach**: Runtime patching strategy - zero core modifications, automatic application, graceful fallback on error. Mirrors working notebook implementation from August 2025 fix.
+**Fragment Navigation Patch** - Intercepts `RenderedHTMLCommon.setFragment()` prototype method, queries both `#id` and `[data-jupyter-id]` selectors with fallback strategy
 
-**Build Status**:
-- TypeScript compilation: Clean
-- ESLint validation: Passing
-- Prettier formatting: Compliant
-- Webpack bundle: 26.6 KB (production-ready)
+**Case-Insensitive Matching** - Performs case-insensitive attribute search when direct selectors fail, handles URL fragment lowercase conversion (e.g., `#performance-optimization` matches `data-jupyter-id="Performance-Optimization"`)
+
+**Hash Change Handling** - Listens to both JupyterLab router's `routed` signal and global `hashchange` events, ensures scroll behavior triggers regardless of navigation method
+
+All patches include graceful fallbacks to original implementations if patching fails.
 
 ## Install
 
