@@ -52,9 +52,9 @@ function patchFragmentNavigation(
     }
   };
 
-  console.log(
-    'jupyterlab_markdown_viewer_toc_fix: Patched setFragment for anchor navigation'
-  );
+  // console.log(
+  //   'jupyterlab_markdown_viewer_toc_fix: Patched setFragment for anchor navigation'
+  // );
 }
 
 /**
@@ -72,32 +72,32 @@ function scrollToFragment(
       : fragment;
     const escaped = CSS.escape(cleanFragment);
 
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: scrollToFragment called with:',
-      fragment,
-      'cleaned:',
-      cleanFragment,
-      'escaped:',
-      escaped
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: scrollToFragment called with:',
+    //   fragment,
+    //   'cleaned:',
+    //   cleanFragment,
+    //   'escaped:',
+    //   escaped
+    // );
 
     // Get sanitizer settings
     const sanitizer = renderMimeRegistry.sanitizer;
     const allowNamedProperties = sanitizer?.allowNamedProperties ?? false;
 
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: allowNamedProperties:',
-      allowNamedProperties
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: allowNamedProperties:',
+    //   allowNamedProperties
+    // );
 
     // Try correct attribute first based on sanitizer settings
     const primarySelector = allowNamedProperties
       ? `#${escaped}`
       : `[data-jupyter-id="${escaped}"]`;
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: Trying primary selector:',
-      primarySelector
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: Trying primary selector:',
+    //   primarySelector
+    // );
     el = contentNode.querySelector(primarySelector);
 
     // Try fallback selector
@@ -105,16 +105,18 @@ function scrollToFragment(
       const fallbackSelector = allowNamedProperties
         ? `[data-jupyter-id="${escaped}"]`
         : `#${escaped}`;
-      console.log(
-        'jupyterlab_markdown_viewer_toc_fix: Primary failed, trying fallback:',
-        fallbackSelector
-      );
+      // console.log(
+      //   'jupyterlab_markdown_viewer_toc_fix: Primary failed, trying fallback:',
+      //   fallbackSelector
+      // );
       el = contentNode.querySelector(fallbackSelector);
     }
 
     // Try case-insensitive search if still not found
     if (!el) {
-      const allHeadings = contentNode.querySelectorAll('[data-jupyter-id], [id]');
+      const allHeadings = contentNode.querySelectorAll(
+        '[data-jupyter-id], [id]'
+      );
       const cleanLower = cleanFragment.toLowerCase();
 
       for (const heading of Array.from(allHeadings)) {
@@ -124,10 +126,10 @@ function scrollToFragment(
           '';
         if (headingId.toLowerCase() === cleanLower) {
           el = heading as HTMLElement;
-          console.log(
-            'jupyterlab_markdown_viewer_toc_fix: Found via case-insensitive match:',
-            headingId
-          );
+          // console.log(
+          //   'jupyterlab_markdown_viewer_toc_fix: Found via case-insensitive match:',
+          //   headingId
+          // );
           break;
         }
       }
@@ -138,22 +140,22 @@ function scrollToFragment(
   }
 
   if (el) {
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: Element found! Scrolling...',
-      el
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: Element found! Scrolling...',
+    //   el
+    // );
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: Navigation successful to',
-      fragment
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: Navigation successful to',
+    //   fragment
+    // );
     return true;
   }
 
-  console.warn(
-    'jupyterlab_markdown_viewer_toc_fix: Element NOT found for fragment:',
-    fragment
-  );
+  // console.warn(
+  //   'jupyterlab_markdown_viewer_toc_fix: Element NOT found for fragment:',
+  //   fragment
+  // );
   return false;
 }
 
@@ -166,9 +168,9 @@ function patchMarkdownViewerFragment(
 ): void {
   const content = widget.content;
   if (!content || !content.setFragment) {
-    console.warn(
-      'jupyterlab_markdown_viewer_toc_fix: No setFragment on content'
-    );
+    // console.warn(
+    //   'jupyterlab_markdown_viewer_toc_fix: No setFragment on content'
+    // );
     return;
   }
 
@@ -181,9 +183,9 @@ function patchMarkdownViewerFragment(
       renderMimeRegistry
     );
     if (!success) {
-      console.warn(
-        'jupyterlab_markdown_viewer_toc_fix: Element not found, trying original'
-      );
+      // console.warn(
+      //   'jupyterlab_markdown_viewer_toc_fix: Element not found, trying original'
+      // );
       originalSetFragment(fragment);
     }
   };
@@ -217,10 +219,10 @@ function patchMarkdownViewerFragment(
     window.removeEventListener('hashchange', handleHashChange);
   });
 
-  console.log(
-    'jupyterlab_markdown_viewer_toc_fix: Patched setFragment and hashchange for widget:',
-    widget.id
-  );
+  // console.log(
+  //   'jupyterlab_markdown_viewer_toc_fix: Patched setFragment and hashchange for widget:',
+  //   widget.id
+  // );
 }
 
 /**
@@ -258,10 +260,10 @@ function patchWidgetTOC(
     const tocModel = tocTracker.get(widget);
 
     if (!tocModel) {
-      console.warn(
-        'jupyterlab_markdown_viewer_toc_fix: No TOC model for widget',
-        widget.id
-      );
+      // console.warn(
+      //   'jupyterlab_markdown_viewer_toc_fix: No TOC model for widget',
+      //   widget.id
+      // );
       return;
     }
 
@@ -283,9 +285,9 @@ function patchWidgetTOC(
         // Get parser from model
         const parser = (model as any).parser;
         if (!parser) {
-          console.warn(
-            'jupyterlab_markdown_viewer_toc_fix: Parser not available'
-          );
+          // console.warn(
+          //   'jupyterlab_markdown_viewer_toc_fix: Parser not available'
+          // );
           return;
         }
 
@@ -309,13 +311,13 @@ function patchWidgetTOC(
 
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            console.log(
-              `jupyterlab_markdown_viewer_toc_fix: Navigated to heading using ${attribute}`
-            );
+            // console.log(
+            //   `jupyterlab_markdown_viewer_toc_fix: Navigated to heading using ${attribute}`
+            // );
           } else {
-            console.warn(
-              `jupyterlab_markdown_viewer_toc_fix: Heading not found - selector: ${selector}`
-            );
+            // console.warn(
+            //   `jupyterlab_markdown_viewer_toc_fix: Heading not found - selector: ${selector}`
+            // );
           }
         } catch (error) {
           console.error(
@@ -326,10 +328,10 @@ function patchWidgetTOC(
       }
     );
 
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: Connected TOC signal for widget:',
-      widget.id
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: Connected TOC signal for widget:',
+    //   widget.id
+    // );
   }, 100);
 }
 
@@ -354,9 +356,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
     tocTracker: ITableOfContentsTracker,
     router: IRouter | null
   ) => {
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: ========== EXTENSION ACTIVATED =========='
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: ========== EXTENSION ACTIVATED =========='
+    // );
 
     // Apply patches
     patchFragmentNavigation(renderMimeRegistry);
@@ -364,20 +366,20 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
     // Listen to JupyterLab router for route changes
     if (router) {
-      console.log('jupyterlab_markdown_viewer_toc_fix: Router available, connecting to routed signal');
+      // console.log('jupyterlab_markdown_viewer_toc_fix: Router available, connecting to routed signal');
       router.routed.connect(() => {
         const hash = window.location.hash;
-        console.log(
-          'jupyterlab_markdown_viewer_toc_fix: Router routed event, hash:',
-          hash
-        );
+        // console.log(
+        //   'jupyterlab_markdown_viewer_toc_fix: Router routed event, hash:',
+        //   hash
+        // );
 
         if (hash) {
           const currentWidget = markdownViewerTracker.currentWidget;
           if (currentWidget && currentWidget.content) {
-            console.log(
-              'jupyterlab_markdown_viewer_toc_fix: Scrolling via router event'
-            );
+            // console.log(
+            //   'jupyterlab_markdown_viewer_toc_fix: Scrolling via router event'
+            // );
             setTimeout(() => {
               scrollToFragment(
                 hash,
@@ -389,21 +391,21 @@ const plugin: JupyterFrontEndPlugin<void> = {
         }
       });
     } else {
-      console.log('jupyterlab_markdown_viewer_toc_fix: Router not available');
+      // console.log('jupyterlab_markdown_viewer_toc_fix: Router not available');
     }
 
     // Add global hashchange listener as fallback
     window.addEventListener('hashchange', () => {
-      console.log(
-        'jupyterlab_markdown_viewer_toc_fix: GLOBAL hashchange detected:',
-        window.location.hash
-      );
+      // console.log(
+      //   'jupyterlab_markdown_viewer_toc_fix: GLOBAL hashchange detected:',
+      //   window.location.hash
+      // );
 
       const currentWidget = markdownViewerTracker.currentWidget;
       if (currentWidget && currentWidget.content) {
-        console.log(
-          'jupyterlab_markdown_viewer_toc_fix: Current widget found, attempting scroll'
-        );
+        // console.log(
+        //   'jupyterlab_markdown_viewer_toc_fix: Current widget found, attempting scroll'
+        // );
         setTimeout(() => {
           scrollToFragment(
             window.location.hash,
@@ -412,15 +414,15 @@ const plugin: JupyterFrontEndPlugin<void> = {
           );
         }, 100);
       } else {
-        console.log(
-          'jupyterlab_markdown_viewer_toc_fix: No current widget found'
-        );
+        // console.log(
+        //   'jupyterlab_markdown_viewer_toc_fix: No current widget found'
+        // );
       }
     });
 
-    console.log(
-      'jupyterlab_markdown_viewer_toc_fix: All patches applied successfully'
-    );
+    // console.log(
+    //   'jupyterlab_markdown_viewer_toc_fix: All patches applied successfully'
+    // );
   }
 };
 
