@@ -5,6 +5,12 @@
 
 This file extends workspace-level configuration with project-specific rules.
 
+## Session Rules
+
+- Do not commit nor push without explicit request
+- You may commit (not push) without request
+- You must not tag code without explicit request
+
 ## Project Context
 
 **Project:** `jupyterlab_markdown_viewer_toc_fix`
