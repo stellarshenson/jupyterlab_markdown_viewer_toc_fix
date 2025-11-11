@@ -8,29 +8,58 @@
 
 JupyterLab 4.x extension that fixes broken Table of Contents (TOC) navigation and anchor links in the Markdown Viewer.
 
-<div class="alert alert-block alert-warning">
-<b>Extension will be deprecated: </b> This extension is meant to be a temporary fix for a known issue in Jupyterlab, where neither TOC nor in-markdown hyperlinks to markdown sections allow document to be scrolled. Once this is fixed in Jupyterlab - this extension will be obsolete and should not be installed.<br><br>Jupyterlab Versions affected: <code>4.0 - 4.4.10</code>
-</div>
+> [!IMPORTANT]
+> **Extension will be deprecated**: This extension is a temporary fix for a known issue in JupyterLab 4.0 - 4.4.10, where neither TOC nor in-markdown hyperlinks to markdown sections allow document to be scrolled. Once this is fixed in JupyterLab core, this extension will be obsolete and should not be installed.
 
 ## Problem
 
-JupyterLab's markdown viewer has broken TOC navigation and anchor links. Clicking TOC items or in-document links produces no scrolling.
+JupyterLab's markdown viewer has broken TOC navigation and anchor links. Affects JupyterLab 4.0 through 4.4.10.
 
-**Root cause**: JupyterLab's HTML sanitizer uses `data-jupyter-id` attributes (default security setting) but navigation code queries for `id` attributes that don't exist. The fix was applied to notebooks in August 2025 but not to the markdown viewer.
+**Symptoms**:
+- Clicking TOC panel items produces no scrolling
+- In-document links like `[Go to Section](#section)` don't navigate
+- URL navigation `file.md#section` fails to scroll to target
+- Console shows "Heading element not found" errors
 
-**Secondary issue**: URL fragments are lowercase (`#section`) but attributes preserve Title-Case (`data-jupyter-id="Section"`), requiring case-insensitive matching.
+**Root Cause - Attribute Selector Mismatch**:
+- JupyterLab's HTML sanitizer removes `id` attributes for XSS protection
+- Headings get `data-jupyter-id` attributes instead (default setting `allowNamedProperties = false`)
+- Navigation code queries for `id` attributes that don't exist
+- `querySelector()` returns `null` and scroll attempts fail silently
+- Example: `## Introduction` renders as `<h2 data-jupyter-id="Introduction">` but TOC queries `[id="Introduction"]`
+
+**Why Notebooks Work But Markdown Viewer Doesn't**:
+- Notebooks were fixed in August 2025 (commit c94607d591) with conditional attribute selectors
+- Markdown viewer was not updated with the same fix
+
+**Secondary Issue - Case Mismatch**:
+- URL fragments are lowercase: `#performance-optimization`
+- Attributes preserve Title-Case from headings: `data-jupyter-id="Performance-Optimization"`
+- Direct string matching fails without case-insensitive comparison
 
 ## Solution
 
-Extension applies runtime patches:
+Extension applies runtime patches to fix navigation without modifying JupyterLab core:
 
-**TOC Navigation** - Connects to `activeHeadingChanged` signal, uses correct attribute selector based on sanitizer settings
+**TOC Navigation Patch**:
+- Connects to markdown viewer's `activeHeadingChanged` signal
+- Uses conditional attribute selector (`data-jupyter-id` vs `id`) based on `sanitizer.allowNamedProperties` setting
+- Properly awaits async heading ID resolution from markdown parser
+- Scrolls to correct heading element with `scrollIntoView()`
 
-**Fragment Navigation** - Patches `setFragment()` to query both `#id` and `[data-jupyter-id]` selectors
+**Fragment Navigation Patch**:
+- Intercepts `RenderedHTMLCommon.setFragment()` prototype method
+- Queries both `#id` and `[data-jupyter-id]` selectors with fallback chain
+- Handles JupyterLab router `routed` signal for in-app navigation
+- Listens to global `hashchange` events for URL-based navigation
 
-**Case-Insensitive Fallback** - Loops through headings comparing lowercase versions when direct selectors fail
+**Case-Insensitive Fallback**:
+- Loops through all headings with `data-jupyter-id` or `id` attributes
+- Compares lowercase versions of search term and attribute values
+- Returns first match when direct selectors fail
+- Resolves mismatch between lowercase URL fragments and Title-Case attributes
 
-All patches include graceful fallbacks to original implementations.
+All patches include graceful fallbacks to original implementations if patching fails or elements cannot be found.
 
 ## Install
 
