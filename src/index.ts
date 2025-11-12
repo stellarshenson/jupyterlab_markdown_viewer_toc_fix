@@ -124,27 +124,26 @@ function scrollToFragment(
 /**
  * Logs all header IDs in the document for debugging.
  */
-function logDocumentHeaders(contentNode: HTMLElement, renderMimeRegistry: IRenderMimeRegistry): void {
+function logDocumentHeaders(
+  contentNode: HTMLElement,
+  renderMimeRegistry: IRenderMimeRegistry
+): void {
   // const sanitizer = renderMimeRegistry.sanitizer;
   // const allowNamedProperties = sanitizer?.allowNamedProperties ?? false;
   // const attribute = allowNamedProperties ? 'id' : 'data-jupyter-id';
-
   // const allHeadings = contentNode.querySelectorAll('h1, h2, h3, h4, h5, h6');
   // if (allHeadings.length === 0) {
   //   return;
   // }
-
   // console.log('=== Document Header Links ===');
   // console.log(`Attribute used: ${attribute}`);
   // console.log('Headers:');
-
   // allHeadings.forEach((heading) => {
   //   const level = heading.tagName.toLowerCase();
   //   const text = heading.textContent || '';
   //   const headingId = (heading as HTMLElement).getAttribute(attribute) || '(no id)';
   //   console.log(`  ${level}: "${text}" -> ${attribute}="${headingId}"`);
   // });
-
   // console.log('=============================');
 }
 
