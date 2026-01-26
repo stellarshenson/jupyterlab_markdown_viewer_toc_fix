@@ -6,6 +6,9 @@
 [![Total PyPI downloads](https://static.pepy.tech/badge/jupyterlab_markdown_viewer_toc_fix)](https://pepy.tech/project/jupyterlab_markdown_viewer_toc_fix)
 [![JupyterLab 4](https://img.shields.io/badge/JupyterLab-4-orange.svg)](https://jupyterlab.readthedocs.io/en/stable/)
 
+> [!TIP]
+> This fix is part of the [stellars_jupyterlab_fixes](https://github.com/stellarshenson/stellars_jupyterlab_fixes) metapackage. Install all Stellars fixes at once: `pip install stellars_jupyterlab_fixes`
+
 JupyterLab 4.x extension that fixes broken Table of Contents (TOC) navigation and anchor links in the Markdown Viewer.
 
 > [!WARNING]
