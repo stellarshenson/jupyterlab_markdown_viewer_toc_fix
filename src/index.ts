@@ -172,9 +172,15 @@ function patchMarkdownViewerFragment(
     }
   };
 
+  // The hash this view last scrolled to. A render with the same hash is a
+  // re-render of the document, not navigation, and must leave the reader
+  // where they are.
+  let scrolledHash = '';
+
   // Handle URL fragment changes (for in-document link clicks)
   const handleHashChange = () => {
     const hash = window.location.hash;
+    scrolledHash = hash;
     if (hash && widget.isVisible) {
       // Small delay to ensure content is rendered
       setTimeout(() => {
@@ -191,7 +197,8 @@ function patchMarkdownViewerFragment(
     }, 50);
 
     const hash = window.location.hash;
-    if (hash) {
+    if (hash && hash !== scrolledHash) {
+      scrolledHash = hash;
       setTimeout(() => {
         scrollToFragment(hash, content.node, renderMimeRegistry);
       }, 100);

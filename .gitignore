@@ -126,3 +126,6 @@ dmypy.json
 
 # Yarn cache
 .yarn/
+
+# Project-local Node.js toolchain the Makefile installs
+.nodeenv/
